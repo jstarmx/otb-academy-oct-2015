@@ -1,15 +1,19 @@
 class Person
-  def initialize(network)
+  attr_reader :location
+  
+  def initialize(network, location = 0)
     @network = network
     @network.subscribe(self)
+    @location = location
     @messages_heard = []
   end
 
   def move_to(location)
+    @location = location.to_f
   end
 
   def shout(message)
-    @network.broadcast(message)
+    @network.broadcast(message, @location)
     self
   end
 
@@ -32,7 +36,11 @@ class Network
     self
   end
 
-  def broadcast(message)
-    @subscribers.each { |subscriber| subscriber.hear(message) }
+  def broadcast(message, location)
+    @subscribers.each do |subscriber|
+      if (subscriber.location - location).abs < 50
+        subscriber.hear(message)
+      end
+    end
   end
 end

@@ -15,3 +15,7 @@ end
 Then(/^Lucy hears Sean's message$/) do
   expect(@lucy.messages_heard).to include(@seans_message)
 end
+
+Then(/^Lucy does not hear Sean's message$/) do
+  expect(@lucy.messages_heard).not_to include(@seans_message)
+end
