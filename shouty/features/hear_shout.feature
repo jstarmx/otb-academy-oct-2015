@@ -21,3 +21,8 @@ Feature: Hear Shout
     Given Lucy is 60m from Sean
     When Sean shouts "Free Bagels!"
     Then Lucy does not hear Sean's message
+  
+  Scenario: Message is too long
+    Given Lucy is 15m from Sean
+    When Sean shouts "Free Bagels! Free Bagels! Free Bagels! Free Bagels!"
+    Then Lucy does not hear Sean's message

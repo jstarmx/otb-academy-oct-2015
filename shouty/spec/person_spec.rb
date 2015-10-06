@@ -23,4 +23,13 @@ describe Person do
 
     expect(lucy.messages_heard).to include(message)
   end
+  
+  it "cannot send a message of more than 30 characters" do
+    sean = Person.new(network, 30)
+    message = "Free Bagels! Free Bagels! Free Bagels! Free Bagels!"
+
+    expect(network).not_to receive(:broadcast)
+
+    sean.shout(message)
+  end
 end

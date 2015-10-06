@@ -13,7 +13,9 @@ class Person
   end
 
   def shout(message)
-    @network.broadcast(message, @location)
+    if message.size <= 30
+      @network.broadcast(message, @location)
+    end
     self
   end
 
