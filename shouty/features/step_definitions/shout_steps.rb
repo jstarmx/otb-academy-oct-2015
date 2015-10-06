@@ -1,21 +1,27 @@
 require 'shouty'
 
-Given(/^Lucy is (\d+)m from Sean$/) do |distance|
+Given(/^the following subscribers$/) do |table|
+  # table is a Cucumber::Core::Ast::DataTable
   @network = Network.new
-  @lucy = Person.new(@network)
-  @sean = Person.new(@network)
-  @lucy.move_to(distance)
+  @people = {}
+  table.hashes.each do |person|
+    @people[person["name"]] = Person.new(@network, person["location"].to_f)
+  end
 end
 
-When(/^Sean shouts "([^"]*)"$/) do |message|
-  @seans_message = message
-  @sean.shout(message)
+When(/^([a-zA-Z]+) shouts "([^"]*)"$/) do |person, message|
+  @message = message
+  @people.fetch(person).shout(message)
 end
 
-Then(/^Lucy hears Sean's message$/) do
-  expect(@lucy.messages_heard).to include(@seans_message)
+Then(/^([a-zA-Z]+) hears ([a-zA-Z]+)'s message$/) do |person1, person2|
+  expect(@people.fetch(person1).messages_heard).to include(@message)
 end
 
-Then(/^Lucy does not hear Sean's message$/) do
-  expect(@lucy.messages_heard).not_to include(@seans_message)
+Then(/^([a-zA-Z]+) does not hear ([a-zA-Z]+)'s message$/) do |person1, person2|
+  expect(@people.fetch(person1).messages_heard).not_to include(@message)
 end
+
+# When(/^Lucy moves to (\d+)m from Sean$/) do |distance|
+#   @lucy.move_to(distance)
+# end

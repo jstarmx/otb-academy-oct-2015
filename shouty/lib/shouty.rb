@@ -40,7 +40,7 @@ class Network
 
   def broadcast(message, location)
     @subscribers.each do |subscriber|
-      if (subscriber.location - location).abs < 50
+      if (subscriber.location - location).abs <= 50
         subscriber.hear(message)
       end
     end
